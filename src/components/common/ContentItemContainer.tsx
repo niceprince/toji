@@ -1,28 +1,28 @@
 import React from "react";
 import Image from "next/image";
-import { WorkItemsProps } from "@/utils/types";
 import Link from "next/link";
+import { Client } from "@/utils/workTypes";
 
-const ContentItemContainer: React.FC<WorkItemsProps> = ({
-  name,
-  workItems,
-  pageLink,
-}) => {
+const ContentItemContainer: React.FC<{
+  pageName: string;
+  clients: Client[];
+  pageLink: string;
+}> = ({ pageName, clients, pageLink }) => {
   return (
     <div>
-      <div className="italic-text text-xl mb-2">{name}</div>
+      <div className="italic-text text-xl mb-2">{pageName}</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {workItems.map((item, index) => (
+        {clients.map((item, index) => (
           <div key={index}>
-            <Link href={`${pageLink}${item.itemName}`}>
+            <Link href={`${pageLink}${item.clientSlug}`}>
               <Image
-                src={item.imagePath}
-                alt={item.itemName}
+                src={item.clientImage}
+                alt={item.clientName}
                 width={100}
                 height={50}
                 style={{ width: "100%", height: "auto" }}
               />
-              <div className="py-3">{item.itemName}</div>
+              <div className="py-3 font-semibold">{item.clientName}</div>
             </Link>
           </div>
         ))}

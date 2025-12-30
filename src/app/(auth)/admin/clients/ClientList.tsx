@@ -1,0 +1,47 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import { useAxios } from "@/hooks/useAxios";
+import ClientCard from "../../admin-components/clientsWork/ClientCard";
+import { Client } from "@/utils/workTypes";
+
+const ClientList: React.FC = () => {
+  const { get, loading } = useAxios();
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const workData = await get<Client[]>("/works");
+        setClients(workData);
+        console.log("Clients fetched:", workData);
+      } catch (error) {
+        console.error("Failed to fetch clients", error);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center text-gray-500">Loading...</p>;
+  }
+
+  if (!clients.length) {
+    return <p className="text-center text-gray-500">No clients found</p>;
+  }
+
+  return (
+    <div>
+      {clients.map((client) => (
+        <ClientCard
+          key={client._id}
+          client={client}
+          onEdit={(c) => console.log("Edit", c)}
+          onDelete={(id) => console.log("Delete", id)}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default ClientList;

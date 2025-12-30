@@ -1,15 +1,21 @@
 import PageContainer from "@/components/common/PageContainer";
 import LeftStaticContent from "@/components/home/LeftStaticContent";
 import ContentItemContainer from "@/components/common/ContentItemContainer";
-import { companyWorkItem } from "./data/static";
 
-export default function Home() {
+import { getClients } from "@/helper/works";
+
+export default async function Home() {
+  const clientsData = await getClients();
   return (
     <>
       <PageContainer
         LeftContents={<LeftStaticContent />}
         RightcontentItems={
-          <ContentItemContainer {...companyWorkItem} pageLink="/work/" />
+          <ContentItemContainer
+            clients={clientsData}
+            pageName="Work"
+            pageLink="/work/"
+          />
         }
       />
     </>
