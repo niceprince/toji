@@ -1,4 +1,3 @@
-import { Client } from "@/utils/workTypes";
 import React from "react";
 
 const LeftWorkContent: React.FC<{

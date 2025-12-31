@@ -6,6 +6,7 @@ import { getClients } from "@/helper/works";
 
 export default async function Home() {
   const clientsData = await getClients();
+
   return (
     <>
       <PageContainer

@@ -1,4 +1,4 @@
-export interface Client {
+export interface ClientType {
   _id: string;
   clientName: string;
   clientImage: string;

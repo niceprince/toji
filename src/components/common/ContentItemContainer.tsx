@@ -1,11 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Client } from "@/utils/workTypes";
+import { ClientType } from "@/utils/workTypes";
 
 const ContentItemContainer: React.FC<{
   pageName: string;
-  clients: Client[];
+  clients: ClientType[];
   pageLink: string;
 }> = ({ pageName, clients, pageLink }) => {
   return (

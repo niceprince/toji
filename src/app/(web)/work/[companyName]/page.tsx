@@ -1,14 +1,13 @@
 import PageContainer from "@/components/common/PageContainer";
 import JobItemContainer from "@/components/common/JobItemContainer";
-// import { jobItems } from "../../../../data/static";
 import LeftWorkContent from "@/components/work/LeftWorkContent";
 import { getClientBySlug, getWorkItems } from "@/helper/works";
 
-const ClientPage = async ({
+export default async function ClientPage({
   params,
 }: {
   params: Promise<{ companyName: string }>;
-}) => {
+}) {
   const { companyName } = await params;
   const clientDetail = await getClientBySlug(companyName);
   const workItems = await getWorkItems(companyName);
@@ -33,6 +32,4 @@ const ClientPage = async ({
       <div>this client item page</div>
     </>
   );
-};
-
-export default ClientPage;
+}

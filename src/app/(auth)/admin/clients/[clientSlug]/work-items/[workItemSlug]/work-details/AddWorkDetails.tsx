@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useAxios } from "@/hooks/useAxios";
@@ -12,8 +12,10 @@ import TipTapEditor from "@/components/common/TiptapEditor";
 const workItemSchema = Yup.object({
   workDetailName: Yup.string().required("Required"),
   workDetailImage: Yup.string().url("Invalid image URL").required("Required"),
-  workDetailDescription: Yup.string().min(5).required("Required"),
-  clientIdRef: Yup.string().required("Client is required"),
+  workDetailDescription: Yup.string(),
+  workDetailDoubleSection: Yup.boolean(),
+  clientIdRef: Yup.string().nullable(),
+  workItemIdRef: Yup.string().nullable(),
   workDetailSlug: Yup.string()
     .matches(/^[a-z0-9-]+$/, "Slug must be lowercase & hyphen-separated")
     .required("Slug is required"),
@@ -130,7 +132,11 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
                 For Work Details two section view
               </h2>
               <label className="flex items-center gap-2">
-                <Field type="checkbox" name="enableExtra" className="h-4 w-4" />
+                <Field
+                  type="checkbox"
+                  name="workDetailDoubleSection"
+                  className="h-4 w-4"
+                />
                 <span className="text-sm">Enable extra field</span>
               </label>
 
@@ -185,7 +191,7 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
               <Field
                 name="workItemIdRef"
                 value={workItemId}
-                disabled={false}
+                disabled={true}
                 placeholder="example-work-item"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
@@ -203,7 +209,7 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
               <Field
                 name="clientIdRef"
                 value={clientId}
-                disabled={false}
+                disabled={true}
                 placeholder="example-work-item"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
