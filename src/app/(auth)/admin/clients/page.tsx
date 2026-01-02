@@ -1,9 +1,13 @@
 import React from "react";
-import AddClientForm from "./AddClientForm";
+import ClientForm from "./ClientForm";
 import ClientList from "./ClientList";
 import WorkTab from "../../admin-components/WorkTabs";
+import { clientInitialValues } from "@/data/static";
+import { requireAuth } from "@/lib/auth";
 
-const Clients: React.FC = () => {
+const Clients: React.FC = async () => {
+  const token = await requireAuth();
+
   return (
     <>
       <h1 className="text-3xl text-black pb-6">Clients</h1>
@@ -19,7 +23,7 @@ const Clients: React.FC = () => {
           {
             key: "create",
             label: "Create Client",
-            content: <AddClientForm />,
+            content: <ClientForm initialValues={clientInitialValues} />,
           },
         ]}
       />

@@ -4,10 +4,17 @@ import { useAxios } from "@/hooks/useAxios";
 import ClientCard from "../../admin-components/clientsWork/ClientCard";
 import { ClientType } from "@/utils/workTypes";
 import BackButton from "@/components/common/BackButton";
+import Modal from "../../admin-components/Modal";
+import { DeleteResponse } from "@/utils/types";
+import ClientEditForm from "./ClientEditForm";
+import { clientInitialValues } from "@/data/static";
 
 const ClientList: React.FC = () => {
-  const { get, loading } = useAxios();
+  const { get, del, loading } = useAxios();
   const [clients, setClients] = useState<ClientType[]>([]);
+  const [formIntialValue, setFormInitialValue] =
+    useState<Omit<ClientType, "_id">>(clientInitialValues);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -23,6 +30,21 @@ const ClientList: React.FC = () => {
     fetchClients();
   }, []);
 
+  const handleEdit = (client: Omit<ClientType, "_id">) => {
+    setFormInitialValue(client);
+    setOpen(true);
+  };
+
+  const handleDelete = async (slug: string) => {
+    const deletedRes = await del<DeleteResponse>(`/works/${slug}`);
+
+    if (deletedRes?.success) {
+      setClients((prevClient) =>
+        prevClient.filter((client) => client.clientSlug !== slug)
+      );
+    }
+  };
+
   if (loading) {
     return <p className="text-center text-gray-500">Loading...</p>;
   }
@@ -37,11 +59,22 @@ const ClientList: React.FC = () => {
         <ClientCard
           key={client._id}
           client={client}
-          onEdit={(c) => console.log("Edit", c)}
-          onDelete={(id) => console.log("Delete", id)}
+          onEdit={(client) => handleEdit(client)}
+          onDelete={(slug) => handleDelete(slug)}
         />
       ))}
       <BackButton />
+
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="This is My modal for edit form..."
+      >
+        <ClientEditForm
+          initialValues={formIntialValue}
+          modalClose={() => setOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };

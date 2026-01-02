@@ -1,3 +1,5 @@
+import { ClientType, WorkDetail, WorkItemTypes } from "@/utils/workTypes";
+
 export const companyWorkItem = {
   name: "Work",
   workItems: [
@@ -95,3 +97,33 @@ export const jobItemsDetails = {
     },
   ],
 };
+
+export const clientInitialValues: Omit<ClientType, "_id"> = {
+  clientName: "",
+  clientImage: "",
+  clientDescriptionText: "",
+  clientSlug: "",
+};
+export const workItemInitialValues: Omit<WorkItemTypes, "_id"> = {
+  workItemName: "",
+  workItemImage: "",
+  workItemDescription: "",
+  clientIdRef: "",
+  workItemSlug: "",
+};
+
+export function workDetailInitialValue(
+  clientName: string,
+  workItemName: string
+) {
+  const initialValues: Omit<WorkDetail, "_id"> = {
+    workDetailName: "",
+    workDetailImage: "",
+    workDetailDoubleSection: false,
+    workDetailDescription: "",
+    clientIdRef: clientName,
+    workItemIdRef: workItemName,
+    workDetailSlug: "",
+  };
+  return initialValues;
+}

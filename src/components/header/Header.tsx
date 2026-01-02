@@ -1,102 +1,140 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const Header = () => {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
+  const [open, setOpen] = useState(false);
 
   return (
-    <div>
-      <nav className="bg-white border-gray-200 py-2.5 dark:bg-gray-900">
-        <div className="flex flex-wrap items-center justify-between max-w-[1440px] mx-auto">
-          <Link href="/" className="flex items-center">
+    <>
+      {/* Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white">
+        <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-4">
+          {/* Logo */}
+          <Link href="/" className="text-xl font-bold">
             <Image
               src="/images/toji-logo.svg"
               height={50}
               width={100}
               className="h-12 mr-3 sm:h-15"
-              alt="Toji.com"
+              alt="www.toji.co.in"
             />
           </Link>
-          <div className="flex items-center lg:order-2">
-            <div className="hidden mt-2 mr-4 sm:inline-block">
-              <span />
-            </div>
+
+          {/* Desktop Menu */}
+          <nav className="hidden md:flex gap-8 text-sm font-medium">
+            <Link href="/" className="hover:text-blue-600">
+              Work
+            </Link>
+            <Link href="/about" className="hover:text-blue-600">
+              About
+            </Link>
+            <Link href="/contact" className="hover:text-blue-600">
+              Contact
+            </Link>
+          </nav>
+
+          {/* Hamburger */}
+          {open ? (
             <button
-              data-collapse-toggle="mobile-menu-2"
-              type="button"
-              className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="mobile-menu-2"
-              aria-expanded="true"
+              onClick={() => setOpen(false)}
+              className="md:hidden focus:outline-none"
             >
-              <span className="sr-only">Open main menu</span>
               <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
               >
                 <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <svg
-                className="hidden w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>
-          </div>
-          <div
-            className="items-center justify-between w-full lg:flex lg:w-auto lg:order-2"
-            id="mobile-menu-2"
-          >
-            <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-              {!isHome && (
-                <li>
-                  <Link
-                    href="/"
-                    className="block py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0 dark:text-white"
-                    aria-current="page"
-                  >
-                    Work
-                  </Link>
-                </li>
-              )}
-              <li>
-                <Link
-                  href="/about"
-                  className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
+          ) : (
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden focus:outline-none"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          )}
         </div>
-      </nav>
-    </div>
+      </header>
+
+      {/* Overlay */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40"
+        />
+      )}
+
+      {/* Mobile Drawer */}
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white transform transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-4">
+          <span className="text-lg font-semibold">
+            <Image
+              src="/images/toji-logo.svg"
+              height={50}
+              width={100}
+              className="h-12 mr-3 sm:h-15"
+              alt="www.toji.co.in"
+            />
+          </span>
+        </div>
+
+        {/* Menu Items */}
+        <nav className="flex flex-col gap-4 p-4 text-sm font-medium">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="hover:text-blue-600"
+          >
+            Work
+          </Link>
+          <Link
+            href="/about"
+            onClick={() => setOpen(false)}
+            className="hover:text-blue-600"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            onClick={() => setOpen(false)}
+            className="hover:text-blue-600"
+          >
+            Contact
+          </Link>
+        </nav>
+      </aside>
+
+      {/* Spacer for fixed navbar */}
+      <div className="h-16" />
+    </>
   );
 };
 

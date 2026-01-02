@@ -7,16 +7,7 @@ import { useAxios } from "@/hooks/useAxios";
 import { toast } from "react-toastify";
 import ImageUpload from "@/components/common/ImageUpload";
 import TipTapEditor from "@/components/common/TiptapEditor";
-
-/* -----------------------------
-   Types
------------------------------- */
-interface AddClientFormValues {
-  clientName: string;
-  clientImage: string;
-  clientDescriptionText: string;
-  clientSlug: string;
-}
+import { ClientType } from "@/utils/workTypes";
 
 /* -----------------------------
    Validation Schema
@@ -39,29 +30,20 @@ const ClientSchema = Yup.object({
     .required("Slug is required"),
 });
 
-/* -----------------------------
-   Initial Values
------------------------------- */
-const initialValues: AddClientFormValues = {
-  clientName: "",
-  clientImage: "",
-  clientDescriptionText: "",
-  clientSlug: "",
-};
-
-/* -----------------------------
-   Component
------------------------------- */
-const AddClientForm: React.FC = () => {
-  const { post, loading } = useAxios();
+const ClientForm: React.FC<{
+  initialValues: Omit<ClientType, "_id">;
+  modalClose: () => void;
+}> = ({ initialValues, modalClose }) => {
+  const { put, loading } = useAxios();
 
   const handleSubmit = async (
-    values: AddClientFormValues,
-    { resetForm }: FormikHelpers<AddClientFormValues>
+    values: Omit<ClientType, "_id">,
+    { resetForm }: FormikHelpers<Omit<ClientType, "_id">>
   ) => {
     console.log("Form Data:", JSON.stringify(values), loading);
-    const addedWork = await post("/works", values);
+    const addedWork = await put(`/works/${initialValues.clientSlug}`, values);
     resetForm();
+    modalClose();
     toast.success("New client is added!");
     return addedWork;
   };
@@ -144,17 +126,6 @@ const AddClientForm: React.FC = () => {
                 error={errors.clientDescriptionText}
                 touched={touched.clientDescriptionText}
               />
-              {/* <Field
-                as="textarea"
-                name="clientDescriptionText"
-                rows={4}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <ErrorMessage
-                name="clientDescriptionText"
-                component="p"
-                className="text-sm text-red-500 mt-1"
-              /> */}
             </div>
 
             {/* Slug */}
@@ -196,4 +167,4 @@ const AddClientForm: React.FC = () => {
   );
 };
 
-export default AddClientForm;
+export default ClientForm;

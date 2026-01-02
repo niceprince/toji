@@ -63,14 +63,14 @@ const WorkDetailCard: React.FC<WorkItemCardProps> = ({
 
         <button
           onClick={() => onEdit?.(workDetail)}
-          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 cursor-pointer"
         >
           Edit
         </button>
 
         <button
-          onClick={() => onDelete?.(workDetail._id)}
-          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700"
+          onClick={() => onDelete?.(workDetail.workDetailSlug)}
+          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 cursor-pointer"
         >
           Delete
         </button>

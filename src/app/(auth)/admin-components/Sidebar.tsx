@@ -25,7 +25,7 @@ const Sidebar = () => {
                   Menu
                 </h2>
                 <ul className="flex flex-col gap-4">
-                  <li>
+                  {/* <li>
                     <Link href="/admin/" className="w-full flex">
                       <span className="">
                         <svg
@@ -45,24 +45,8 @@ const Sidebar = () => {
                         </svg>
                       </span>
                       <span className="text-base pl-2">Dashboard</span>
-                      {/* <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="ml-auto w-5 h-5 transition-transform duration-200"
-                      >
-                        <path
-                          d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        ></path>
-                      </svg> */}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       aria-current="page"

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { LogoutButton } from "./Logout";
 
-const AdminHeader: React.FC = () => {
+const AdminHeader: React.FC<{ token: string }> = ({ token }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
@@ -27,7 +28,7 @@ const AdminHeader: React.FC = () => {
             className="object-cover"
           />
         </button>
-
+        {token && <LogoutButton />}
         {/* Overlay */}
         {isOpen && (
           <button
@@ -36,7 +37,6 @@ const AdminHeader: React.FC = () => {
             className="fixed inset-0 h-full w-full cursor-default"
           />
         )}
-
         {/* Dropdown */}
         {isOpen && (
           <div className="absolute right-0 mt-16 w-32 bg-white rounded-lg shadow-lg py-2 z-20">

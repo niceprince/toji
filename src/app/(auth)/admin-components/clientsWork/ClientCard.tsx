@@ -53,21 +53,21 @@ const ClientCard: React.FC<ClientCardProps> = ({
       <div className="flex gap-2">
         <Link
           href={`/admin/clients/${client.clientSlug}/work-items/`}
-          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 cursor-pointer"
         >
           {client.clientName}
         </Link>
 
         <button
           onClick={() => onEdit?.(client)}
-          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 cursor-pointer"
         >
           Edit
         </button>
 
         <button
-          onClick={() => onDelete?.(client._id)}
-          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700"
+          onClick={() => onDelete?.(client.clientSlug)}
+          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 cursor-pointer"
         >
           Delete
         </button>

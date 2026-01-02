@@ -54,21 +54,21 @@ const WorkItemCard: React.FC<WorkItemCardProps> = ({
       <div className="flex gap-2">
         <Link
           href={`/admin/clients/${workItem.clientIdRef}/work-items/${workItem.workItemSlug}/work-details`}
-          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 cursor-pointer"
         >
           {workItem.workItemName}
         </Link>
 
         <button
           onClick={() => onEdit?.(workItem)}
-          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+          className="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 cursor-pointer"
         >
           Edit
         </button>
 
         <button
-          onClick={() => onDelete?.(workItem._id)}
-          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700"
+          onClick={() => onDelete?.(workItem.workItemSlug)}
+          className="rounded-md bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 cursor-pointer"
         >
           Delete
         </button>

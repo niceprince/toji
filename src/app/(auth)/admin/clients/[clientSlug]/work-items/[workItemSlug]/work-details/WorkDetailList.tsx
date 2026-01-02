@@ -4,13 +4,21 @@ import { useAxios } from "@/hooks/useAxios";
 import WorkDetailCard from "@/app/(auth)/admin-components/clientsWork/WorkDetailCard";
 import { WorkDetail } from "@/utils/workTypes";
 import BackButton from "@/components/common/BackButton";
+import { DeleteResponse } from "@/utils/types";
+import Modal from "@/app/(auth)/admin-components/Modal";
+import { workDetailInitialValue } from "@/data/static";
+import EditWorkDetails from "./EditWorkDetails";
 
 const WorkDetailList: React.FC<{ clientId: string; workItemId: string }> = ({
   clientId,
   workItemId,
 }) => {
-  const { get, loading } = useAxios();
+  const { get, del, loading } = useAxios();
   const [workDetail, setWorkDetail] = useState<WorkDetail[]>([]);
+  const [formIntialValue, setFormInitialValue] = useState<
+    Omit<WorkDetail, "_id">
+  >(workDetailInitialValue(clientId, workItemId));
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -28,6 +36,23 @@ const WorkDetailList: React.FC<{ clientId: string; workItemId: string }> = ({
     fetchClients();
   }, []);
 
+  const handleEdit = (workDetail: Omit<WorkDetail, "_id">) => {
+    setFormInitialValue(workDetail);
+    setOpen(true);
+  };
+
+  const handleDelete = async (slug: string) => {
+    const deletedRes = await del<DeleteResponse>(
+      `/works/${clientId}/work-items/${workItemId}/work-details/${slug}`
+    );
+
+    if (deletedRes?.success) {
+      setWorkDetail((prevWorkItems) =>
+        prevWorkItems.filter((workItem) => workItem.workDetailSlug !== slug)
+      );
+    }
+  };
+
   if (loading) {
     return <p className="text-center text-gray-500">Loading...</p>;
   }
@@ -42,11 +67,23 @@ const WorkDetailList: React.FC<{ clientId: string; workItemId: string }> = ({
         <WorkDetailCard
           key={workDetailData._id}
           workDetail={workDetailData}
-          onEdit={(c) => console.log("Edit", c)}
-          onDelete={(id) => console.log("Delete", id)}
+          onEdit={(c) => handleEdit(c)}
+          onDelete={(slug) => handleDelete(slug)}
         />
       ))}
       <BackButton />
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title="This is My modal for edit form..."
+      >
+        <EditWorkDetails
+          clientId={clientId}
+          initialValues={formIntialValue}
+          workItemId={workItemId}
+          modalClose={() => setOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };

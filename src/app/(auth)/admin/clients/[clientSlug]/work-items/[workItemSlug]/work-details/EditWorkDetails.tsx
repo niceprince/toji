@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useAxios } from "@/hooks/useAxios";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import ImageUpload from "@/components/common/ImageUpload";
 import { AddWorkDetailFormValues } from "@/utils/types";
 import TipTapEditor from "@/components/common/TiptapEditor";
+import { WorkDetail } from "@/utils/workTypes";
 
 const workItemSchema = Yup.object({
   workDetailName: Yup.string().required("Required"),
@@ -21,34 +22,13 @@ const workItemSchema = Yup.object({
     .required("Slug is required"),
 });
 
-/* -----------------------------
-   Initial Values
------------------------------- */
-function formInitialValue(clientName: string, workItemName: string) {
-  const initialValues: AddWorkDetailFormValues = {
-    workDetailName: "",
-    workDetailImage: "",
-    workDetailDoubleSection: false,
-    workDetailDescription: "",
-    clientIdRef: clientName,
-    workItemIdRef: workItemName,
-    workDetailSlug: "",
-  };
-  return initialValues;
-}
-/* -----------------------------
-   Component
------------------------------- */
-const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
-  clientId,
-  workItemId,
-}) => {
+const EditWorkDetails: React.FC<{
+  clientId: string;
+  workItemId: string;
+  initialValues: Omit<WorkDetail, "_id">;
+  modalClose: () => void;
+}> = ({ clientId, workItemId, initialValues, modalClose }) => {
   const { post, loading } = useAxios();
-
-  // useEffect(() => {
-  //   initialValues.clientIdRef = clientId;
-  //   initialValues.workItemIdRef = workItemId;
-  // }, [clientId, workItemId]);
 
   const handleSubmit = async (
     values: AddWorkDetailFormValues,
@@ -60,6 +40,7 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
       values
     );
     resetForm();
+    modalClose();
     toast.success("New client is added!");
     return addedWork;
   };
@@ -67,11 +48,11 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
       <h2 className="text-2xl font-semibold mb-6 text-gray-800">
-        Add New Work item
+        Edit New Work item detail
       </h2>
 
       <Formik
-        initialValues={formInitialValue(clientId, workItemId)}
+        initialValues={initialValues}
         validationSchema={workItemSchema}
         onSubmit={handleSubmit}
       >
@@ -187,10 +168,10 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
             </button>
             <button
               type="button"
-              disabled={false}
+              onClick={() => modalClose()}
               className="p-3 ml-4 cursor-pointer bg-red-800 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
             >
-              {"Clear"}
+              Close
             </button>
           </Form>
         )}
@@ -199,4 +180,4 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
   );
 };
 
-export default AddWorkDetails;
+export default EditWorkDetails;

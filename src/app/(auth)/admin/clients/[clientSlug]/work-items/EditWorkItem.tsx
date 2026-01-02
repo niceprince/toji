@@ -1,22 +1,21 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useAxios } from "@/hooks/useAxios";
 import { toast } from "react-toastify";
 import ImageUpload from "@/components/common/ImageUpload";
-import { AddWorkDetailFormValues } from "@/utils/types";
+import { AddWorkItemFormValues } from "@/utils/types";
 import TipTapEditor from "@/components/common/TiptapEditor";
+import { WorkItemTypes } from "@/utils/workTypes";
 
 const workItemSchema = Yup.object({
-  workDetailName: Yup.string().required("Required"),
-  workDetailImage: Yup.string().url("Invalid image URL").required("Required"),
-  workDetailDescription: Yup.string(),
-  workDetailDoubleSection: Yup.boolean(),
-  clientIdRef: Yup.string().nullable(),
-  workItemIdRef: Yup.string().nullable(),
-  workDetailSlug: Yup.string()
+  workItemName: Yup.string().required("Required"),
+  workItemImage: Yup.string().url("Invalid image URL").required("Required"),
+  workItemDescription: Yup.string().min(5).required("Required"),
+  clientIdRef: Yup.string(),
+  workItemSlug: Yup.string()
     .matches(/^[a-z0-9-]+$/, "Slug must be lowercase & hyphen-separated")
     .required("Slug is required"),
 });
@@ -24,42 +23,28 @@ const workItemSchema = Yup.object({
 /* -----------------------------
    Initial Values
 ------------------------------ */
-function formInitialValue(clientName: string, workItemName: string) {
-  const initialValues: AddWorkDetailFormValues = {
-    workDetailName: "",
-    workDetailImage: "",
-    workDetailDoubleSection: false,
-    workDetailDescription: "",
-    clientIdRef: clientName,
-    workItemIdRef: workItemName,
-    workDetailSlug: "",
-  };
-  return initialValues;
-}
+
 /* -----------------------------
    Component
 ------------------------------ */
-const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
-  clientId,
-  workItemId,
-}) => {
+const EditWorkItem: React.FC<{
+  clientId: string;
+  initialValues: Omit<WorkItemTypes, "_id">;
+  modalClose: () => void;
+}> = ({ clientId, initialValues, modalClose }) => {
   const { post, loading } = useAxios();
 
-  // useEffect(() => {
-  //   initialValues.clientIdRef = clientId;
-  //   initialValues.workItemIdRef = workItemId;
-  // }, [clientId, workItemId]);
-
   const handleSubmit = async (
-    values: AddWorkDetailFormValues,
-    { resetForm }: FormikHelpers<AddWorkDetailFormValues>
+    values: AddWorkItemFormValues,
+    { resetForm }: FormikHelpers<AddWorkItemFormValues>
   ) => {
     console.log("Form Data:", JSON.stringify(values), loading);
     const addedWork = await post(
-      `/works/${clientId}/work-items/${workItemId}/work-details`,
+      `/works/${clientId}/work-items/${initialValues.workItemSlug}`,
       values
     );
     resetForm();
+    modalClose();
     toast.success("New client is added!");
     return addedWork;
   };
@@ -71,7 +56,7 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
       </h2>
 
       <Formik
-        initialValues={formInitialValue(clientId, workItemId)}
+        initialValues={initialValues}
         validationSchema={workItemSchema}
         onSubmit={handleSubmit}
       >
@@ -79,14 +64,14 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
           <Form className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Work detail name
+                Work item name
               </label>
               <Field
-                name="workDetailName"
+                name="workItemName"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               <ErrorMessage
-                name="workDetailName"
+                name="workItemName"
                 component="p"
                 className="text-sm text-red-500 mt-1"
               />
@@ -94,32 +79,32 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Work Detail image
+                Work item image
               </label>
               <div className="flex">
                 <div className="flex-1">
                   <Field
-                    name={`workDetailImage`}
+                    name={`workItemImage`}
                     className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     disabled={true}
                   />
                   <ErrorMessage
-                    name={`workDetailImage`}
+                    name={`workItemImage`}
                     component="p"
                     className="text-sm text-red-500 mt-1"
                   />
                 </div>
                 <div className="mt-1">
                   <ImageUpload
-                    onSuccess={(url) => setFieldValue(`workDetailImage`, url)}
+                    onSuccess={(url) => setFieldValue(`workItemImage`, url)}
                   />
                 </div>
 
                 {/* Preview */}
-                {values.workDetailImage && (
+                {values.workItemImage && (
                   <div className="mt-1">
                     <img
-                      src={values.workDetailImage}
+                      src={values.workItemImage}
                       alt="Preview"
                       className="h-10 rounded-lg object-cover"
                     />
@@ -128,53 +113,35 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
               </div>
             </div>
 
-            {/* Checkbox */}
-            <div className="p-4 border border-black relative mt-12">
-              <h2 className="absolute -top-6 translate-y-1/2 bg-white">
-                For Work Details two section view
-              </h2>
-              <label className="flex items-center gap-2">
-                <Field
-                  type="checkbox"
-                  name="workDetailDoubleSection"
-                  className="h-4 w-4"
-                />
-                <span className="text-sm">Enable extra field</span>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Work item (left section description)
               </label>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Creatives work description
-                </label>
-                <TipTapEditor
-                  value={values.workDetailDescription}
-                  onChange={(val) =>
-                    setFieldValue("workDetailDescription", val)
-                  }
-                  error={errors.workDetailDescription}
-                  touched={touched.workDetailDescription}
-                />
-              </div>
+              <TipTapEditor
+                value={values.workItemDescription}
+                onChange={(val) => setFieldValue("workItemDescription", val)}
+                error={errors.workItemDescription}
+                touched={touched.workItemDescription}
+              />
             </div>
 
             {/* Slug */}
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Work item access path name
+                Work item path name
               </label>
               <Field
-                name="workDetailSlug"
-                placeholder="Work item access path name"
+                name="workItemSlug"
+                placeholder="example-work-item"
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               <ErrorMessage
-                name="workDetailSlug"
+                name="workItemSlug"
                 component="p"
                 className="text-sm text-red-500 mt-1"
               />
             </div>
 
-            <Field type="hidden" name="workItemIdRef" />
             <Field type="hidden" name="clientIdRef" />
 
             {/* Submit */}
@@ -187,10 +154,10 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
             </button>
             <button
               type="button"
-              disabled={false}
+              onClick={modalClose}
               className="p-3 ml-4 cursor-pointer bg-red-800 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
             >
-              {"Clear"}
+              Close
             </button>
           </Form>
         )}
@@ -199,4 +166,4 @@ const AddWorkDetails: React.FC<{ clientId: string; workItemId: string }> = ({
   );
 };
 
-export default AddWorkDetails;
+export default EditWorkItem;

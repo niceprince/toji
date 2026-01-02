@@ -56,3 +56,8 @@ export interface AddWorkDetailFormValues {
   clientIdRef: string;
   workDetailSlug: string;
 }
+
+export type DeleteResponse = {
+  success: boolean;
+  message: string;
+};

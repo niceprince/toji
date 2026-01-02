@@ -68,8 +68,13 @@ export function useAxios<T = unknown>() {
   // (url: string, data?: any, config?: AxiosRequestConfig) =>
   //   request({ url, method: "PUT", data, ...config });
 
-  const del = (url: string, config?: AxiosRequestConfig) =>
-    request({ url, method: "DELETE", ...config });
+  // const del = (url: string, config?: AxiosRequestConfig) =>
+  //   request({ url, method: "DELETE", ...config });
+  const del = <R = unknown>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<R | null> =>
+    request({ url, method: "DELETE", ...config }) as Promise<R>;
 
   return {
     ...state,
