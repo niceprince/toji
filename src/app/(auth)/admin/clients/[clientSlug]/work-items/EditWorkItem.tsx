@@ -32,14 +32,14 @@ const EditWorkItem: React.FC<{
   initialValues: Omit<WorkItemTypes, "_id">;
   modalClose: () => void;
 }> = ({ clientId, initialValues, modalClose }) => {
-  const { post, loading } = useAxios();
+  const { put, loading } = useAxios();
 
   const handleSubmit = async (
     values: AddWorkItemFormValues,
     { resetForm }: FormikHelpers<AddWorkItemFormValues>
   ) => {
     console.log("Form Data:", JSON.stringify(values), loading);
-    const addedWork = await post(
+    const addedWork = await put(
       `/works/${clientId}/work-items/${initialValues.workItemSlug}`,
       values
     );

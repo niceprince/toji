@@ -13,7 +13,7 @@ export function LogoutButton() {
   return (
     <button
       onClick={logout}
-      className="rounded bg-red-600 px-4 py-2 text-white cursor-pointer"
+      className="rounded bg-gray-300 px-4 ml-4 text-black cursor-pointer"
     >
       Logout
     </button>

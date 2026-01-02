@@ -28,15 +28,15 @@ const EditWorkDetails: React.FC<{
   initialValues: Omit<WorkDetail, "_id">;
   modalClose: () => void;
 }> = ({ clientId, workItemId, initialValues, modalClose }) => {
-  const { post, loading } = useAxios();
+  const { put, loading } = useAxios();
 
   const handleSubmit = async (
     values: AddWorkDetailFormValues,
     { resetForm }: FormikHelpers<AddWorkDetailFormValues>
   ) => {
     console.log("Form Data:", JSON.stringify(values), loading);
-    const addedWork = await post(
-      `/works/${clientId}/work-items/${workItemId}/work-details`,
+    const addedWork = await put(
+      `/works/${clientId}/work-items/${workItemId}/work-details/${initialValues.workDetailSlug}`,
       values
     );
     resetForm();

@@ -71,7 +71,7 @@ const WorkDetailList: React.FC<{ clientId: string; workItemId: string }> = ({
           onDelete={(slug) => handleDelete(slug)}
         />
       ))}
-      <BackButton />
+      <BackButton backLink={`/admin/clients/${clientId}/work-items/`} />
       <Modal
         isOpen={open}
         onClose={() => setOpen(false)}

@@ -63,7 +63,7 @@ const ClientList: React.FC = () => {
           onDelete={(slug) => handleDelete(slug)}
         />
       ))}
-      <BackButton />
+      <BackButton backLink={`/admin/`} />
 
       <Modal
         isOpen={open}

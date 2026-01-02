@@ -50,7 +50,7 @@ const SingleContentContainer: React.FC<{
             )}
           </div>
         ))}
-        <BackButton />
+        <BackButton backLink={`/works/${workItemData.clientIdRef}`} />
       </div>
     </div>
   );

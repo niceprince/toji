@@ -1,10 +1,13 @@
 "use client";
+import React from "react";
 
-const BackButton = () => {
+import Link from "next/link";
+
+const BackButton: React.FC<{ backLink: string }> = ({ backLink }) => {
   return (
     <div>
-      <button
-        type="button"
+      <Link
+        href={backLink}
         onClick={() => window.history.back()}
         className="inline-flex items-center cursor-pointer gap-2 rounded-lg border-none border-gray-300 bg-white px-3 py-2 text font-medium text-gray-900 hover:bg-gray-100 transition"
       >
@@ -22,7 +25,7 @@ const BackButton = () => {
           />
         </svg>
         Back
-      </button>
+      </Link>
     </div>
   );
 };
