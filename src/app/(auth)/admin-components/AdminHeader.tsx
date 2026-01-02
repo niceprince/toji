@@ -30,15 +30,15 @@ const AdminHeader: React.FC<{ token: string }> = ({ token }) => {
         </button>
         {token && <LogoutButton />}
         {/* Overlay */}
-        {isOpen && (
+        {/* {isOpen && (
           <button
             type="button"
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 h-full w-full cursor-default"
           />
-        )}
+        )} */}
         {/* Dropdown */}
-        {isOpen && (
+        {/* {isOpen && (
           <div className="absolute right-0 mt-16 w-32 bg-white rounded-lg shadow-lg py-2 z-20">
             <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-100">
               Account
@@ -53,7 +53,7 @@ const AdminHeader: React.FC<{ token: string }> = ({ token }) => {
               Sign Out
             </a>
           </div>
-        )}
+        )} */}
       </div>
     </header>
   );

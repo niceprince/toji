@@ -24,10 +24,7 @@ const WorkDetails = async ({
             key: "WorkDetailList",
             label: "Work Details List",
             content: (
-              <WorkDetailList
-                clientId={workItemSlug}
-                workItemId={workItemSlug}
-              />
+              <WorkDetailList clientId={clientSlug} workItemId={workItemSlug} />
             ),
           },
           {

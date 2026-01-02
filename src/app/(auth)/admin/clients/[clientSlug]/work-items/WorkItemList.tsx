@@ -17,6 +17,8 @@ const WorkItemList: React.FC<{ clientId: string }> = ({ clientId }) => {
   >(workItemInitialValues);
   const [open, setOpen] = useState(false);
 
+  console.log("{ clientId: string }", clientId);
+
   useEffect(() => {
     const fetchClients = async () => {
       try {

@@ -1,15 +1,21 @@
 import { connectDb } from "@/helper/db";
 import WorkItem from "@/models/work/workItem";
+import { ClientParams } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDb();
 
 // workItems
 
-export async function GET() {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: ClientParams }
+) {
+  const { clientId } = await params;
+
   let workItem = [];
   try {
-    workItem = await WorkItem.find();
+    workItem = await WorkItem.find({ clientIdRef: clientId });
   } catch (error) {
     console.log("Not able to find the workItem");
     console.log(error);

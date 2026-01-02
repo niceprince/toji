@@ -22,6 +22,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
   onEdit,
   onDelete,
 }) => {
+  console.log("client.clientSlug >>>> ", client.clientSlug);
   return (
     <div className="flex items-center gap-4 rounded-lg border bg-white px-4 py-3 mb-3 shadow-sm hover:bg-gray-50">
       {/* Image */}

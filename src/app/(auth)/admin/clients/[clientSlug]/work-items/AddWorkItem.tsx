@@ -13,44 +13,27 @@ const workItemSchema = Yup.object({
   workItemName: Yup.string().required("Required"),
   workItemImage: Yup.string().url("Invalid image URL").required("Required"),
   workItemDescription: Yup.string().min(5).required("Required"),
-  clientIdRef: Yup.string().required("Client is required"),
+  clientIdRef: Yup.string(),
   workItemSlug: Yup.string()
     .matches(/^[a-z0-9-]+$/, "Slug must be lowercase & hyphen-separated")
     .required("Slug is required"),
 });
 
-/* -----------------------------
-   Initial Values
------------------------------- */
-const initialValues: AddWorkItemFormValues = {
-  workItemName: "",
-  workItemImage: "",
-  workItemDescription: "",
-  clientIdRef: "",
-  workItemSlug: "",
-};
-
-/* -----------------------------
-   Component
------------------------------- */
 const AddWorkItem: React.FC<{ clientId: string }> = ({ clientId }) => {
   const { post, loading } = useAxios();
-  const [workItemId, setWorkItemId] = useState<string>("");
 
-  useEffect(() => {
-    initialValues.clientIdRef = clientId;
-    // initialValues.workItemIdRef = workItemId;
-  }, [clientId, workItemId]);
-
-  const updateWorkItemId = (event: React.FocusEvent<HTMLInputElement>) => {
-    setWorkItemId(event.target.value);
+  const initialValues: AddWorkItemFormValues = {
+    workItemName: "",
+    workItemImage: "",
+    workItemDescription: "",
+    clientIdRef: clientId,
+    workItemSlug: "",
   };
 
   const handleSubmit = async (
     values: AddWorkItemFormValues,
     { resetForm }: FormikHelpers<AddWorkItemFormValues>
   ) => {
-    console.log("Form Data:", JSON.stringify(values), loading);
     const addedWork = await post(`/works/${clientId}/work-items`, values);
     resetForm();
     toast.success("New client is added!");
@@ -152,7 +135,6 @@ const AddWorkItem: React.FC<{ clientId: string }> = ({ clientId }) => {
               <Field
                 name="workItemSlug"
                 placeholder="example-work-item"
-                onBlur={updateWorkItemId}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               />
               <ErrorMessage
@@ -162,21 +144,7 @@ const AddWorkItem: React.FC<{ clientId: string }> = ({ clientId }) => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Client Ref
-              </label>
-              <Field
-                name="clientIdRef"
-                placeholder="example-work-item"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              />
-              <ErrorMessage
-                name="clientIdRef"
-                component="p"
-                className="text-sm text-red-500 mt-1"
-              />
-            </div>
+            <Field type="hidden" name="clientIdRef" />
 
             {/* Submit */}
             <button
