@@ -1,22 +1,11 @@
 "use client";
 
+import { WorkDetail } from "@/utils/workTypes";
 import Image from "next/image";
-import Link from "next/link";
-
-interface WorkItemListCard {
-  _id: string;
-  workDetailName: string;
-  workDetailImage: string;
-  workDetailDoubleSection: boolean;
-  workDetailDescription: string;
-  workItemIdRef: string;
-  clientIdRef: string;
-  workDetailSlug: string;
-}
 
 interface WorkItemCardProps {
-  workDetail: WorkItemListCard;
-  onEdit?: (client: WorkItemListCard) => void;
+  workDetail: WorkDetail;
+  onEdit?: (client: WorkDetail) => void;
   onDelete?: (id: string) => void;
 }
 
