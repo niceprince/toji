@@ -3,6 +3,14 @@ import JobItemContainer from "@/components/common/JobItemContainer";
 import LeftWorkContent from "@/components/work/LeftWorkContent";
 import { getClientBySlug, getWorkDetails, getWorkItems } from "@/helper/works";
 import SingleContentContainer from "@/components/common/SingleContentContainer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title:
+    "Be the better business. We can help. | Toji Communication Consultancy",
+  description:
+    "There's little that communication cannot solve. If you have a problem, we have a solution. Try us.",
+};
 
 export default async function ClientPage({
   params,

@@ -7,6 +7,14 @@ import {
   getWorkDetails,
   getWorkItemBySlug,
 } from "@/helper/works";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title:
+    "Toji Communication Consultancy - Be the better business. We can help.",
+  description:
+    "There's little that communication cannot solve. If you have a problem, we have a solution. Try us.",
+};
 
 async function WorkItems({
   params,
