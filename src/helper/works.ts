@@ -8,7 +8,7 @@ import WorkItemDetail from "@/models/work/workItemDetail";
 await connectDb();
 
 export async function getClients(): Promise<ClientType[]> {
-  return Client.find({}).lean();
+  return Client.find().lean();
 }
 
 export async function getClientBySlug(clientSlug: string): Promise<ClientType> {
