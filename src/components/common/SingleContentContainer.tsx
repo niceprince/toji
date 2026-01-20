@@ -25,8 +25,8 @@ const SingleContentContainer: React.FC<{
                         <Image
                           src={item.workDetailDescription}
                           alt={item.workDetailDescription}
-                          width={100}
-                          height={50}
+                          width={1080}
+                          height={640}
                           style={{ width: "100%", height: "auto" }}
                         />
                       </div>
@@ -36,8 +36,8 @@ const SingleContentContainer: React.FC<{
                         <Image
                           src={item.workDetailImage}
                           alt={item.workDetailName}
-                          width={100}
-                          height={50}
+                          width={1080}
+                          height={640}
                           style={{ width: "100%", height: "auto" }}
                         />
                       </div>
@@ -48,8 +48,8 @@ const SingleContentContainer: React.FC<{
                     <Image
                       src={item.workDetailImage}
                       alt={item.workDetailName}
-                      width={100}
-                      height={50}
+                      width={1600}
+                      height={1000}
                       style={{ width: "100%", height: "auto" }}
                     />
                     {/* <div className="py-3">{item.workDetailName}</div> */}
